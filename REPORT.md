@@ -2,6 +2,37 @@
 
 This report provides a brief overview of the YouTube Music API backend endpoints wrapped by `ytmusicapi`, grouped by module.
 
+
+## Authentication Options
+
+`ytmusicapi` requires authentication for any endpoint that accesses or modifies personal user data (marked with **Requires Authentication: Yes** below). The library provides two methods to authenticate:
+
+### 1. OAuth Authentication (Recommended)
+This uses the Google API flow for TV devices to grant access to YouTube Music. It requires a Google Cloud Console account to generate a Client ID and Secret for the YouTube Data API.
+
+**Setup:**
+1. Run `ytmusicapi oauth` in your terminal and follow the instructions to log in.
+2. This creates an `oauth.json` file.
+3. Instantiate the client in your code:
+```python
+from ytmusicapi import YTMusic, OAuthCredentials
+ytmusic = YTMusic('oauth.json', oauth_credentials=OAuthCredentials(client_id="YOUR_CLIENT_ID", client_secret="YOUR_CLIENT_SECRET"))
+```
+
+### 2. Browser Authentication (Header emulation)
+This method emulates your browser session by reusing its request headers and cookies. It remains valid as long as your browser session is valid (typically up to 2 years, unless you log out).
+
+**Setup:**
+1. Open YouTube Music in your browser while logged in.
+2. Open Developer Tools (Network tab) and copy the Request Headers of an authenticated POST request (like `/browse`).
+3. Run `ytmusicapi browser` in your terminal and paste the copied headers to generate a `browser.json` file.
+4. Instantiate the client:
+```python
+from ytmusicapi import YTMusic
+ytmusic = YTMusic('browser.json')
+```
+
+---
 ## Uploads Module
 Responsible for handling `uploads` related actions.
 
